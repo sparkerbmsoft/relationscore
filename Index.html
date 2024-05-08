@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Score Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .score {
+            margin-bottom: 20px;
+        }
+
+        .score label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .score .bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .score .bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #007bff;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .result-container {
+            display: none;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result {
+            margin-bottom: 10px;
+        }
+
+        .result label {
+            font-weight: bold;
+        }
+
+        .result p {
+            margin: 5px 0;
+        }
+
+        #resultHeader {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #averageScore {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #insights {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .hm{
+            color: Green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Partner Names, Check Relationship Score with Your friends</h2>
+        <input type="text" id="partner1" placeholder="Partner 1's First Name">
+        <input type="text" id="partner2" placeholder="Partner 2's First Name">
+        <button onclick="calculateScore()">Calculate Relationship Score</button>
+    </div>
+
+    <div id="result" class="container result-container">
+        <div id="resultHeader">Relationship Score</div>
+        <div id="averageScore" class="result"></div>
+        <div id="insights" class="result"></div>
+        <div id="scores" class="score"></div>
+        <button onclick="location.reload()">Calculate Again</button>
+    </div>
+
+    <script>
+        function calculateScore() {
+            var partner1 = document.getElementById('partner1').value.trim().toLowerCase();
+            var partner2 = document.getElementById('partner2').value.trim().toLowerCase();
+            var resultContainer = document.getElementById('result');
+            var scoresContainer = document.getElementById('scores');
+            var averageScoreDiv = document.getElementById('averageScore');
+            var insightsDiv = document.getElementById('insights');
+
+            if ((partner1.includes('ba') || partner1.includes('va')) && (partner2.includes('ba') || partner2.includes('va'))) {
+                // If both partners' names contain "ba" or "va", set all metric scores to 100%
+                displayPerfectScore(resultContainer, averageScoreDiv, insightsDiv, scoresContainer);
+                return;
+            }
+
+            var metrics = [
+                "Trustworthiness", "Respect", "Communication", "Empathy", "Supportiveness",
+                "Patience", "Kindness", "Adaptability", "Responsibility", "Forgiveness",
+                "Loyalty", "Independence", "Resilience", "Joy", "Generosity",
+                "Reliability", "Understanding", "Humility", "Optimism", "Gratitude",
+                "Honesty", "Ambition", "Self-awareness", "Family", "Resolution",
+                "Creativity", "Caring", "Authenticity", "Boundaries", "Integrity",
+                "Future", "Compatibility"
+            ];
+
+            var scoresHTML = '';
+            var totalScore = 0;
+
+            metrics.forEach(function(metric) {
+                var score = Math.floor(Math.random() * 101); // Random score between 0 and 100
+                totalScore += score;
+                scoresHTML += '<div class="score"><label>' + metric + ':</label><div class="bar"><div class="fill" style="color:white;padding:3px;width: ' + score + '%">'+score+'%</div></div></div>';
+            });
+
+            var averageScore = totalScore / metrics.length;
+
+            scoresContainer.innerHTML = scoresHTML;
+            averageScoreDiv.innerHTML = '<p>Average Relationship Score: ' + Math.round(averageScore) + '%</p>';
+
+            var breakpointMessage = '';
+            if (averageScore >= 90) {
+                breakpointMessage = 'Perfect Partner';
+            } else if (averageScore >= 70) {
+                breakpointMessage = 'Neutral Partner';
+            } else {
+                breakpointMessage = 'Not Suitable Partner';
+            }
+
+            insightsDiv.innerHTML = '<p>Breakpoint: ' + breakpointMessage + '</p>';
+            if (Math.round(averageScore) === 100) {
+                insightsDiv.innerHTML += '<p>Congratulations! You have a perfect relationship. A wedding opportunity awaits you!</p>';
+                
+            }
+
+            resultContainer.classList.add('active');
+        }
+
+        function displayPerfectScore(resultContainer, averageScoreDiv, insightsDiv, scoresContainer) {
+            var metrics = [
+                "Trustworthiness", "Respect", "Communication", "Empathy", "Supportiveness",
+                "Patience", "Kindness", "Adaptability", "Responsibility", "Forgiveness",
+                "Loyalty", "Independence", "Resilience", "Joy", "Generosity",
+                "Reliability", "Understanding", "Humility", "Optimism", "Gratitude",
+                "Honesty", "Ambition", "Self-awareness", "Family", "Resolution",
+                "Creativity", "Caring", "Authenticity", "Boundaries", "Integrity",
+                "Future", "Compatibility"
+            ];
+
+            var scoresHTML = '';
+            metrics.forEach(function(metric) {
+                scoresHTML += '<div class="score"><label>' + metric + ':</label><div class="bar"><div class="fill" style="width: 100%;padding:4px; font-weight:bolder; color:white;">100%</div></div></div>';
+            });
+
+            scoresContainer.innerHTML = scoresHTML;
+            averageScoreDiv.innerHTML = '<p>Relationship Score: 100%</p>';
+            insightsDiv.innerHTML = '<p>Perfect Partner</p><p>Congratulations! <b class="hm">You have a perfect relationship. A wedding opportunity awaits you!</b></p>';
+
+            resultContainer.classList.add('active');
+
+        }
+    </script>
+</body>
+</html>
